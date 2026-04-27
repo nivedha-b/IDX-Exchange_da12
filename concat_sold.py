@@ -93,4 +93,4 @@ print(sold["PropertyType"].value_counts())          # 398011 Residential rows af
 # filter sold dataset to only include residential properties
 sold = sold[sold["PropertyType"] == "Residential"]
 print(sold["PropertyType"].value_counts())          # 398011 Residential rows after filtering
-sold.to_csv("data/residential_sold.csv", index=False) # save filtered sold dataset to CSV
+#sold.to_csv("data/residential_sold.csv", index=False) # save filtered sold dataset to CSV

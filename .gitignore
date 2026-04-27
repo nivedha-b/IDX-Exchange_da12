@@ -2,6 +2,7 @@
 data/
 data/*.csv
 scripts/
+.vscode/
 
 #ignore .DS_store files
 .DS_Store

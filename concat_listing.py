@@ -66,4 +66,4 @@ print(listing["PropertyType"].value_counts())           # 523176 Residential row
 # filter listing dataset to only include residential properties
 listing = listing[listing["PropertyType"] == "Residential"]
 print(listing["PropertyType"].value_counts())           # 523176 Residential rows after filtering
-listing.to_csv("data/residential_listings.csv", index=False)  # save filtered listings dataset to CSV
+#listing.to_csv("data/residential_listings.csv", index=False)  # save filtered listings dataset to CSV
