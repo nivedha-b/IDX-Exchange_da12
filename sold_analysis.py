@@ -47,12 +47,12 @@ metadata_cols = [
 market_data = sold.drop(columns=metadata_cols, errors="ignore")
 metadata = sold[metadata_cols]
 
-soldFiltered = sold.drop(columns=metadata_cols, errors="ignore")    # create copy of sold dataset to filter missing values without affecting original dataset
+sold = sold.drop(columns=metadata_cols, errors="ignore")    # filter metadata
 
 ## MISSING VALUE ANALYSIS
 print("\nMissing Value Analysis\n")
-missing_count = soldFiltered.isnull().sum()             # calculate missing counts and percentages per column
-missing_pct = soldFiltered.isnull().mean() * 100        
+missing_count = sold.isnull().sum()             # calculate missing counts and percentages per column
+missing_pct = sold.isnull().mean() * 100        
 
 missing_summary = pd.DataFrame({
     "Missing Count": missing_count,
@@ -73,7 +73,7 @@ print("\nDataset after filtering missing columns\n")
 print(market_data.info())
 
 # Save filtered dataset as CSV
-soldFiltered.to_csv("data/sold_filtered.csv", index=False)
+sold.to_csv("data/sold_filtered.csv", index=False)
 
 
 ## NUMERIC DISTRIBUTION REVIEW
@@ -97,7 +97,7 @@ numeric_fields = [
 
 
 cols = ["ClosePrice", "LivingArea", "DaysOnMarket"]
-summary = soldFiltered[cols].describe(percentiles=[0.01, 0.05, 0.25, 0.5, 0.75, 0.95, 0.99])
+summary = sold[cols].describe(percentiles=[0.01, 0.05, 0.25, 0.5, 0.75, 0.95, 0.99])
 print(summary)
 
 

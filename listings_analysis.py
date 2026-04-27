@@ -46,12 +46,12 @@ metadata_cols = [
 market_data = listings.drop(columns=metadata_cols, errors="ignore")
 metadata = listings[metadata_cols]
 
-listingsFiltered = listings.drop(columns=metadata_cols, errors="ignore")    # create copy of listings dataset to filter missing values without affecting original dataset
+listings = listings.drop(columns=metadata_cols, errors="ignore")    # filter metadata
 
 ## MISSING VALUE ANALYSIS
 print("\nMissing Value Analysis\n")
-missing_count = listingsFiltered.isnull().sum()             # calculate missing counts and percentages per column
-missing_pct = listingsFiltered.isnull().mean() * 100        
+missing_count = listings.isnull().sum()             # calculate missing counts and percentages per column
+missing_pct = listings.isnull().mean() * 100        
 
 missing_summary = pd.DataFrame({
     "Missing Count": missing_count,
@@ -65,14 +65,14 @@ print("\nColumns with >85% missing values\n")
 missing = missing_summary[missing_summary["Missing %"] > 85]     # flag columns with >85% missing values
 print(missing)
 
-listingsFiltered = listingsFiltered.drop(columns=missing.index)                    # drop columns with >85% missing values
+listings = listings.drop(columns=missing.index)                    # drop columns with >85% missing values
 
 # Validate completeness
 print("\nDataset after filtering missing columns\n")
-print(listingsFiltered.info())
+print(listings.info())
 
 # Save filtered dataset as CSV
-listingsFiltered.to_csv("data/listings_filtered.csv", index=False)
+listings.to_csv("data/listings_filtered.csv", index=False)
 
 
 ## NUMERIC DISTRIBUTION REVIEW
@@ -96,5 +96,5 @@ numeric_fields = [
 
 
 cols = ["ClosePrice", "LivingArea", "DaysOnMarket"]
-summary = listingsFiltered[cols].describe(percentiles=[0.01, 0.05, 0.25, 0.5, 0.75, 0.95, 0.99])
+summary = listings[cols].describe(percentiles=[0.01, 0.05, 0.25, 0.5, 0.75, 0.95, 0.99])
 print(summary)
