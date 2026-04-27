@@ -37,7 +37,7 @@ metadata_cols = [
     "OriginatingSystemName", "OriginatingSystemSubName",
     "BusinessType",
     "UnparsedAddress", "StreetNumberNumeric",
-    "ContractStatusChangeDate", "PurchaseContractDate", "ListingContractDate",
+    "ContractStatusChangeDate", "PurchaseContractDate",
     "ElementarySchool", "MiddleOrJuniorSchool", "HighSchool",
     "ElementarySchoolDistrict", "MiddleOrJuniorSchoolDistrict", "HighSchoolDistrict",
     "BuyerAgencyCompensation", "BuyerAgencyCompensationType",
