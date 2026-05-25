@@ -3,6 +3,8 @@ data/
 data/*.csv
 scripts/
 .vscode/
+out/
+out/*.csv
 
 #ignore .DS_store files
 .DS_Store
