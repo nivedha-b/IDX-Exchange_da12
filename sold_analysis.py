@@ -3,6 +3,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 pd.set_option('display.max_rows', None)
 
+#------------------------------------------------
+# WEEKS 2-3 – DATASET STRUCTURING AND VALIDATION 
+#------------------------------------------------
+
 
 # load filtered sold dataset
 sold = pd.read_csv("data/residential_sold.csv", low_memory=False)  

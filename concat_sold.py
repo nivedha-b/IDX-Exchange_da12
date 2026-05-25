@@ -1,5 +1,10 @@
 import pandas as pd
 
+#--------------------------------------
+# WEEK 1 – MONTHLY DATASET AGGREGATION 
+#--------------------------------------
+
+
 # aggregate sold datasets
 sold41 = pd.read_csv("data/CRMLSSold202401.csv")    # 2024
 sold42 = pd.read_csv("data/CRMLSSold202402.csv")
