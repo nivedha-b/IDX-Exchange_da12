@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 pd.set_option('display.max_rows', None)
 pd.set_option("display.max_columns", None)
 
@@ -33,6 +34,13 @@ sold["YrMo"] = sold["CloseDate"].dt.to_period("M")
 
 # Close to Original List Ratio
 sold["CloseOriginalRatio"] = sold["ClosePrice"] / sold["OriginalListPrice"]     # Captures full price reduction history
+# clean
+sold.loc[
+    (sold["OriginalListPrice"] <= 0) |
+    (sold["ClosePrice"] <= 0) |
+    (sold["CloseOriginalRatio"] > 2),
+    "CloseOriginalRatio"
+] = np.nan
 
 # Listing to Contract Days
 sold["ListingtoContractDays"] = sold["PurchaseContractDate"].dt.day - sold["ListingContractDate"].dt.day   # Measures time from listing to accepted offer
@@ -105,3 +113,61 @@ buyer_office_summary.to_csv("out/buyer_office_summary.csv", index=False)
 
 
 
+#---------------------------------------------
+# WEEK 7 - OUTLIER DETECTION AND DATA QUALITY
+#---------------------------------------------
+
+# interquartile range
+df = sold.copy()
+iqr_cols = ["ClosePrice", "LivingArea", "DaysOnMarket"]
+
+# force numeric
+df[iqr_cols] = df[iqr_cols].apply(
+    pd.to_numeric,
+    errors="coerce"
+)
+
+# replace inf values
+df[iqr_cols] = df[iqr_cols].replace(
+    [np.inf, -np.inf],
+    np.nan
+)
+
+for col in iqr_cols:
+    Q1 = df[col].quantile(0.25)
+    Q3 = df[col].quantile(0.75)
+    IQR = Q3 - Q1
+    lower = Q1 - 1.5 * IQR
+    upper = Q3 + 1.5 * IQR
+
+    df[f"{col}_outlier_flag"] = (
+        (df[col] < lower) | (df[col] > upper)
+    )
+
+# combined outlier flag
+df["any_outlier_flag"] = (
+    df["ClosePrice_outlier_flag"] |
+    df["LivingArea_outlier_flag"] |
+    df["DaysOnMarket_outlier_flag"]
+)
+
+# create CLEAN filtered dataset
+sold_filtered = df[
+    ~df["any_outlier_flag"]
+].copy()
+
+print("Original Data Rows: ", len(sold))
+print("Filtered Data Rows: ", len(sold_filtered))
+
+print("\nMedian values BEFORE filtering:")
+print(sold[iqr_cols].median())
+
+print("\nMedian values AFTER filtering:")
+print(sold_filtered[iqr_cols].median())
+
+print("\nOutlier Counts:")
+for col in iqr_cols:
+    print(col, ":", df[f"{col}_outlier_flag"].sum())
+
+df.to_csv("data/sold_flagged_outliers.csv", index=False)
+sold_filtered.to_csv("data/sold_clean_filter.csv")
